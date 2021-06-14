@@ -44,10 +44,19 @@ class NotesViewModel @Inject constructor(
         notesEventChannel.send(NotesEvent.ShowEditResultMessage(text))
     }
 
+    fun onNoteSwiped(note: Note) = viewModelScope.launch {
+        noteRepository.deleteNote(note)
+        notesEventChannel.send(NotesEvent.ShowUndoDeleteNoteMessage(note))
+    }
+    fun onUndoDeleteClicked(note: Note) = viewModelScope.launch {
+        noteRepository.insertNote(note)
+    }
+
     sealed class NotesEvent {
         object NavigateToAddNoteScreen : NotesEvent()
         data class NavigateToEditNoteScreen(val note: Note) : NotesEvent()
         data class ShowEditResultMessage(val msg: String) : NotesEvent()
+        data class ShowUndoDeleteNoteMessage(val note: Note) : NotesEvent()
 
     }
 }

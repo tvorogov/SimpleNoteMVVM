@@ -12,7 +12,6 @@ class NotesAdapter(
     private val listener: OnItemClickListener
 ) : ListAdapter<Note, NotesAdapter.NotesViewHolder>(DiffCallback()) {
 
-
     interface OnItemClickListener {
         fun onItemClick(note: Note)
     }
@@ -59,7 +58,6 @@ class NotesAdapter(
             }
         }
     }
-
 
     class DiffCallback : DiffUtil.ItemCallback<Note>() {
         override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
