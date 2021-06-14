@@ -8,7 +8,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tvorogov.simplenotemvvm.data.Note
 import com.tvorogov.simplenotemvvm.databinding.ItemNoteBinding
 
-class NotesAdapter : ListAdapter<Note, NotesAdapter.NotesViewHolder>(DiffCallback()) {
+class NotesAdapter(
+    private val listener: OnItemClickListener
+) : ListAdapter<Note, NotesAdapter.NotesViewHolder>(DiffCallback()) {
+
+
+    interface OnItemClickListener {
+        fun onItemClick(note: Note)
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesViewHolder {
@@ -26,7 +33,7 @@ class NotesAdapter : ListAdapter<Note, NotesAdapter.NotesViewHolder>(DiffCallbac
         holder.bind(currentItem)
     }
 
-    class NotesViewHolder(private val binding: ItemNoteBinding) :
+    inner class NotesViewHolder(private val binding: ItemNoteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
 
@@ -37,6 +44,19 @@ class NotesAdapter : ListAdapter<Note, NotesAdapter.NotesViewHolder>(DiffCallbac
                 textViewNoteContent.text = note.content
             }
 
+        }
+
+        init {
+
+            binding.apply {
+                root.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val note = getItem(position)
+                        listener.onItemClick(note)
+                    }
+                }
+            }
         }
     }
 

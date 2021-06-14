@@ -9,5 +9,20 @@
         android:id="@+id/notesFragment"
         android:name="com.tvorogov.simplenotemvvm.features.notes.NotesFragment"
         android:label="fragment_notes"
-        tools:layout="@layout/fragment_notes" />
+        tools:layout="@layout/fragment_notes" >
+        <action
+            android:id="@+id/action_notesFragment_to_editNoteFragment"
+            app:destination="@id/editNoteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editNoteFragment"
+        android:name="com.tvorogov.simplenotemvvm.features.editnote.EditNoteFragment"
+        android:label="fragment_edit_note"
+        tools:layout="@layout/fragment_edit_note" >
+        <argument
+            android:name="note"
+            app:argType="com.tvorogov.simplenotemvvm.data.Note"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
