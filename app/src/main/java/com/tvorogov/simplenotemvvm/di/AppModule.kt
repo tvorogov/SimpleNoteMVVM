@@ -6,6 +6,8 @@ import com.tvorogov.simplenotemvvm.data.source.DefaultNoteRepository
 import com.tvorogov.simplenotemvvm.data.source.NoteRepository
 import com.tvorogov.simplenotemvvm.data.source.local.NoteDao
 import com.tvorogov.simplenotemvvm.data.source.local.NoteDatabase
+import com.tvorogov.simplenotemvvm.data.source.local.NoteLocalDataSource
+import com.tvorogov.simplenotemvvm.data.source.remote.NoteRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,18 +22,41 @@ object AppModule {
     @Singleton
     fun provideDatabase(
         app: Application
-    ) = Room.databaseBuilder(app, NoteDatabase::class.java, "note_database")
-        .fallbackToDestructiveMigration()
-        .build()
+    ): NoteDatabase {
+        return Room.databaseBuilder(app, NoteDatabase::class.java, "note_database")
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
 
     @Provides
     @Singleton
-    fun provideNoteDao(db: NoteDatabase) = db.noteDao()
+    fun provideNoteDao(db: NoteDatabase): NoteDao {
+        return db.noteDao()
+    }
 
     @Provides
     @Singleton
-    fun provideRepository(dao: NoteDao): NoteRepository {
-        return DefaultNoteRepository(dao)
+    fun provideNoteLocalDataSource(dao: NoteDao): NoteLocalDataSource {
+        return NoteLocalDataSource(dao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNoteRemoteDataSource(): NoteRemoteDataSource {
+        return NoteRemoteDataSource()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRepository(
+        noteLocalDataSource: NoteLocalDataSource,
+        noteRemoteDataSource: NoteRemoteDataSource
+    ): NoteRepository {
+        return DefaultNoteRepository(
+            noteLocalDataSource,
+            noteRemoteDataSource
+        )
     }
 
 
