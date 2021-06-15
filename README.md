@@ -20,4 +20,4 @@ Simple project of note for learning MVVM, Hilt, Room & more
   - Repository pattern
   
 ## Architecture
-<img src="misc/repository_pattern_diagramt.png"/>
+<img src="misc/repository_pattern_diagram.png"/>
