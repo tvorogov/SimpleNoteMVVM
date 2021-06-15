@@ -16,7 +16,7 @@ Simple project of note for learning MVVM, Hilt, Room & more
 
 - Architecture
   - Single activity architecture
-  - MVVM Architecture
+  - MVVM architecture
   - Repository pattern
   
 ## Architecture
